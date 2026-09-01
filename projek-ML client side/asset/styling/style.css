@@ -1,0 +1,197 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background-color: #0d0d0d;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+h1 {
+  font-size: 5vw;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #a1a1a1;
+}
+
+/* Sections Base Layout */
+section {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.intro,
+.outro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000000;
+  z-index: 2;
+}
+
+.product-overview {
+  background-color: #141414;
+  position: relative;
+}
+
+/* 3D Canvas Container */
+.model-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* Headers / Marquee */
+.header-1 {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 200vw;
+  display: flex;
+  white-space: nowrap;
+  z-index: 3;
+}
+
+.header-2 {
+  position: absolute;
+  top: 50%;
+  left: 100vw;
+  transform: translateY(-50%);
+  width: 200vw;
+  display: flex;
+  white-space: nowrap;
+  z-index: 7;
+}
+
+.header-1 h1,
+.header-2 h1 {
+  font-size: 8vw;
+  text-transform: uppercase;
+}
+
+.split-char span {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* Circular Mask Transition */
+.circular-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #080808;
+  z-index: 4;
+  clip-path: circle(0% at 50% 50%);
+}
+
+/* Tooltips */
+.tooltips {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 75%;
+  height: 75%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.tooltip {
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+}
+
+.tooltip-1 {
+  align-self: flex-start;
+}
+
+.tooltip-2 {
+  align-self: flex-end;
+}
+
+.icon-wrap ion-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+}
+
+.divider {
+  width: 100%;
+  height: 2px;
+  background-color: #ffffff;
+  margin: 0.8rem 0;
+  transform: scaleX(0);
+}
+
+.tooltip-1 .divider {
+  transform-origin: left;
+}
+
+.tooltip-2 .divider {
+  transform-origin: right;
+}
+
+.tooltip-title,
+.tooltip-desc {
+  overflow: hidden;
+}
+
+.tooltip-title span,
+.tooltip-desc span {
+  display: block;
+  transform: translateY(125%);
+  will-change: transform;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .header-1 h1,
+  .header-2 h1 {
+    font-size: 14vw;
+  }
+
+  .tooltips {
+    flex-direction: column;
+    justify-content: space-around;
+  }
+
+  .tooltip-1,
+  .tooltip-2 {
+    align-self: center;
+    width: 100%;
+  }
+
+  .tooltip-2 .divider {
+    transform-origin: left;
+  }
+}
