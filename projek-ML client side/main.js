@@ -5,13 +5,11 @@ if (history.scrollRestoration) {
 window.scrollTo(0, 0);
 
 window.addEventListener("DOMContentLoaded", () => {
-  // Pastikan posisi benar-benar di atas saat mulai
   window.scrollTo(0, 0);
   document.body.style.overflow = "hidden";
 
   gsap.registerPlugin(ScrollTrigger);
 
-  // Pastikan ScrollTrigger mulai dari posisi 0
   ScrollTrigger.clearScrollMemory && ScrollTrigger.clearScrollMemory("manual");
 
   const words = document.querySelectorAll(".loader-word");
@@ -21,7 +19,6 @@ window.addEventListener("DOMContentLoaded", () => {
     defaults: { ease: "power3.inOut" },
   });
 
-  // Animasi kata loader
   words.forEach((word) => {
     tl.to(word, {
       opacity: 1,
@@ -37,7 +34,6 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Slide-up preloader
   tl.to(
     "#loader",
     {
@@ -45,23 +41,15 @@ window.addEventListener("DOMContentLoaded", () => {
       duration: 1,
       ease: "expo.inOut",
       onComplete: () => {
-        // Buka scroll
         document.body.style.overflow = "";
-
-        // Paksa scroll tetap di top sebelum ScrollTrigger menghitung layout
         window.scrollTo(0, 0);
-
-        // Inisialisasi animasi ScrollTrigger setelah intro selesai
         initScrollAnimations();
-
-        // Refresh perhitungan posisi
         ScrollTrigger.refresh();
       },
     },
     "-=0.1",
   );
 
-  // Reveal elemen hero
   tl.to(
     ".hero-elem",
     {
@@ -76,83 +64,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // ================= FUNGSI ANIMASI SCROLL =================
   function initScrollAnimations() {
-    const navbar = document.getElementById("navbar");
-
-    // ================= 1. HIDE ON SCROLL DOWN / SHOW ON SCROLL UP =================
-    ScrollTrigger.create({
-      start: "top top",
-      end: "max",
-      onUpdate: (self) => {
-        // self.direction: 1 = scroll ke bawah, -1 = scroll ke atas
-        if (self.direction === 1 && self.scroll() > 50) {
-          // Sembunyikan navbar ke atas layar
-          gsap.to(navbar, {
-            yPercent: -100,
-            duration: 0.35,
-            ease: "power2.out",
-            overwrite: "auto",
-          });
-        } else {
-          // Tampilkan kembali navbar
-          gsap.to(navbar, {
-            yPercent: 0,
-            duration: 0.35,
-            ease: "power2.out",
-            overwrite: "auto",
-          });
-        }
-      },
-    });
-
-    // ================= 2. MENYESUAIKAN WARNA NAVBAR DENGAN SECTION =================
-
-    // Saat Masuk ke Section 2 (Gelap -> Navbar Hitam Solid + Teks Putih)
-    ScrollTrigger.create({
-      trigger: "#section-parallax",
-      start: "top 20px",
-      onEnter: () => {
-        gsap.to(navbar, {
-          backgroundColor: "transparent",
-          color: "#ffffff",
-          borderBottom: "1px solid rgba(255,255,255,0.08)",
-          duration: 0.4,
-        });
-      },
-      onLeaveBack: () => {
-        // Kembali ke Section 1 (Paling atas -> Transparan + Teks Hitam)
-        gsap.to(navbar, {
-          backgroundColor: "transparent",
-          color: "#111111",
-          borderBottom: "1px solid transparent",
-          duration: 0.4,
-        });
-      },
-    });
-
-    // Saat Masuk ke Section 3 (Terang -> Navbar Krem/Putih Solid + Teks Hitam)
-    ScrollTrigger.create({
-      trigger: "#section-3",
-      start: "top 80px",
-      onEnter: () => {
-        gsap.to(navbar, {
-          backgroundColor: "transparent",
-          color: "#111111",
-          borderBottom: "1px solid rgba(0,0,0,0.08)",
-          duration: 0.4,
-        });
-      },
-      onLeaveBack: () => {
-        // Scroll balik ke Section 2 (Gelap -> Latar Hitam + Teks Putih)
-        gsap.to(navbar, {
-          backgroundColor: "transparent",
-          color: "#ffffff",
-          borderBottom: "1px solid rgba(255,255,255,0.08)",
-          duration: 0.4,
-        });
-      },
-    });
-
-    // ================= 3. PIN SECTION 1 & OVERLAP TRANSITION =================
+    // ================= 3. PIN SECTION HERO & OVERLAP =================
     ScrollTrigger.create({
       trigger: "#hero",
       start: "top top",
@@ -213,5 +125,73 @@ window.addEventListener("DOMContentLoaded", () => {
       const speed = parseFloat(elem.getAttribute("data-speed")) || 60;
       parallaxTimeline.to(elem, { y: speed, ease: "none" }, 0);
     });
+
+    // ================= 5. ANIMASI SECTION 3 =================
+    gsap.to(".sec3-title, .sec3-desc", {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      stagger: 0.2,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: "#section-3",
+        start: "top 80%",
+      },
+    });
+
+    gsap.fromTo(
+      ".sec3-card",
+      { opacity: 0, y: 60 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.25,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: "#section-3",
+          start: "top 70%",
+        },
+      },
+    );
+
+    // ================= 6. FOOTER OVERLAP & PARALLAX (SEPERTI HERO) =================
+    // Pin section sebelum footer (#section-5) agar diam di tempat saat Footer meluncur naik
+    ScrollTrigger.create({
+      trigger: "#section-5",
+      start: "bottom bottom",
+      end: "bottom top",
+      pin: true,
+      pinSpacing: false,
+    });
+
+    // Efek menyusut & meredup pada Section 5 saat Footer mulai menutupi
+    gsap.to("#section-5", {
+      scale: 0.94,
+      opacity: 0.4,
+      ease: "none",
+      scrollTrigger: {
+        trigger: "#footer",
+        start: "top bottom",
+        end: "top top",
+        scrub: true,
+      },
+    });
   }
+});
+
+// ================= NAVBAR HIDE/SHOW ON SCROLL =================
+let lastScrollY = window.scrollY;
+const navbar = document.getElementById("navbar");
+
+window.addEventListener("scroll", () => {
+  const currentScrollY = window.scrollY;
+
+  if (currentScrollY > lastScrollY && currentScrollY > 100) {
+    navbar.classList.add("-translate-y-full");
+  } else {
+    navbar.classList.remove("-translate-y-full");
+  }
+
+  lastScrollY = currentScrollY;
 });
