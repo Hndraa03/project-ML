@@ -139,6 +139,44 @@ window.addEventListener("DOMContentLoaded", () => {
       },
     });
 
+    gsap.to(".sec4-title, .sec4-desc", {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      stagger: 0.2,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: "#section-4",
+        start: "top 80%",
+      },
+    });
+
+    // 2. Animasi Cards (Tanpa menyentuh SVG)
+    gsap.fromTo(
+      ".sec4-card",
+      {
+        opacity: 0,
+        y: 80,
+      },
+      {
+        opacity: 1,
+        y: (i) => {
+          // Menjaga layout bertingkat (lg:-translate-y-6 & lg:translate-y-6) pada desktop
+          if (window.innerWidth >= 1024) {
+            return i === 1 ? 24 : -24; // 24px sejajar dengan class translate-y-6
+          }
+          return 0;
+        },
+        duration: 0.9,
+        stagger: 0.3,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: "#section-4",
+          start: "top 70%",
+        },
+      },
+    );
+
     gsap.fromTo(
       ".sec3-card",
       { opacity: 0, y: 60 },
