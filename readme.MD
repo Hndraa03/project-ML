@@ -1,4 +1,4 @@
-# Binova - Smart Waste Recognition
+# EcoSort - Smart Waste Recognition
 
 ## Menjalankan project
 
