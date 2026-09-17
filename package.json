@@ -1,0 +1,12 @@
+{
+  "name": "EcoSort-smart-waste-recognition",
+  "version": "1.0.0",
+  "private": true,
+  "description": "EcoSort - AI waste sorting camera (Teachable Machine + TensorFlow.js)",
+  "scripts": {
+    "start": "node start.js"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
